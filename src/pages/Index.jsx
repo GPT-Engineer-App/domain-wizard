@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Index = () => {
   const [url, setUrl] = useState("");
@@ -12,6 +13,8 @@ const Index = () => {
   const [selectedDomains, setSelectedDomains] = useState([]);
   const [chatInput, setChatInput] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [provider, setProvider] = useState("");
+  const [model, setModel] = useState("");
 
   const handleUrlSubmit = async () => {
     // Fetch related domains from the backend
@@ -21,7 +24,7 @@ const Index = () => {
 
   const handleChatSubmit = async () => {
     // Send chat input to the backend and get response
-    const response = await fetchChatResponse(chatInput, selectedDomains);
+    const response = await fetchChatResponse(chatInput, selectedDomains, provider, model);
     setChatHistory([...chatHistory, { input: chatInput, response }]);
     setChatInput("");
   };
@@ -31,9 +34,9 @@ const Index = () => {
     return ["example.com", "example.org", "example.net"];
   };
 
-  const fetchChatResponse = async (input, domains) => {
+  const fetchChatResponse = async (input, domains, provider, model) => {
     // Mock function to simulate fetching chat response
-    return "This is a mock response based on the selected domains.";
+    return `This is a mock response based on the selected domains, provider (${provider}), and model (${model}).`;
   };
 
   const toggleDomainSelection = (domain) => {
@@ -81,6 +84,40 @@ const Index = () => {
           </CardContent>
         </Card>
       )}
+
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle>Select Provider and Model</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-4">
+            <Label htmlFor="provider">Provider</Label>
+            <Select onValueChange={setProvider}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a provider" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Google">Google</SelectItem>
+                <SelectItem value="Anthropic">Anthropic</SelectItem>
+                <SelectItem value="OpenAI">OpenAI</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="model">Model</Label>
+            <Select onValueChange={setModel}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Model1">Model 1</SelectItem>
+                <SelectItem value="Model2">Model 2</SelectItem>
+                <SelectItem value="Model3">Model 3</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="mt-4">
         <CardHeader>
